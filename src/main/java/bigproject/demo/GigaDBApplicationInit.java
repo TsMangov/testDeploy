@@ -19,7 +19,7 @@ public class GigaDBApplicationInit implements CommandLineRunner {
   public void run(String... args) throws Exception {
     this.productService.initProducts();
     this.userService.seedUsers();
-    System.out.println("tryCommit");
+
 
   }
 }
