@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/commons :: head"></head>
+
+<body>
+    <header th:replace="fragments/commons :: navigation"></header>
+
+
+    <div class="spacer"></div>
+
+    <div class="container-original">
+        <h2 class="text-center zaglavie">Chosen PETS in your cart!</h2>
+
+    <form method="POST"
+          th:action="@{/cart/all}"
+          th:object="${orderBindingModel}"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"  enctype="multipart/form-data">
+        <div class="row">
+            <div class="form-group col mb-3">
+                <label for="inputPhone"
+                       class="text-white font-weight-bold">Enter your phone number</label>
+                <input  name="phone"
+                        th:value="*{phone}"
+                        th:errorclass="is-invalid"
+                        required
+                        type="text"
+                        id="inputPhone"
+                        class="form-control"
+                        placeholder="Phone number"/>
+                <small id="phoneError"
+                       class="invalid-feedback text-light form-text bg-danger rounded"  >You must enter your phone number</small>
+            </div>
+            <div class="form-group col mb-3">
+                <label for="inputTown"
+                       class="text-white font-weight-bold">Enter delivery city name.</label>
+                <input  name="town"
+                        th:value="*{town}"
+                        th:errorclass="is-invalid"
+                        required
+                        type="text"
+                        id="inputTown"
+                        class="form-control"
+                        placeholder="City name"/>
+                <small id="townError"
+                       class="invalid-feedback text-light form-text bg-danger rounded"  >You must enter city name</small>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col mb-3">
+                <label for="inputStreet"
+                       class="text-white font-weight-bold">Enter delivery street and number</label>
+                <input  name="street"
+                        th:value="*{street}"
+                        th:errorclass="is-invalid"
+                        required
+                        type="text"
+                        id="inputStreet"
+                        class="form-control"
+                        placeholder="Address"/>
+                <small id="streetError"
+                       class="invalid-feedback text-light form-text bg-danger rounded"  >You must enter street name and number</small>
+                <small th:if="${noItemsFound}" class=" text-light form-text bg-danger rounded"  >Can not create order with no items</small>
+            </div>
+
+        </div>
+
+        <div class="row text-center">
+            <div class="col ">
+                <div class="button-holder d-flex justify-content-center">
+                    <input type="submit" class="btn btn-info btn-lg" value="Submit Order"/>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    </div>
+
+    <div class="main-cart">
+    <!-- Authors -->
+    <table  id="example"  >
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Breed</th>
+                <th>Gender</th>
+                <th>Type</th>
+                <th>Birthday</th>
+                <th>Picture</th>
+                <th>Decrease</th>
+                <th>Count</th>
+                <th>Increase</th>
+                <th>Price</th>
+                <th>Total Price</th>
+                <th>Delete</th>
+                <th>order id</th>
+                <th>Topic name</th>
+            </tr>
+        </thead>
+
+        <tbody class="authors-container">
+             <tr th:each="c : ${allCartItems}" th:object="${c}" >
+
+                <td th:text="*{product.name}" >name</td>
+                <td th:text="*{product.breed}" >breed</td>
+                <td th:text="*{product.gender.name()}" >gender</td>
+                <td th:text="*{product.category.name}" >type</td>
+                <td th:text="*{product.birthDate}" >type</td>
+                 <td >
+                     <figure >
+                         <img data-enlargeable  alt="" class="imgInTable" title=""  th:src="*{product.imgUrl}"/>
+                     </figure>
+                 </td>
+                 <td >
+                     <form th:action="@{/cart/decreaseCount/{id}/(id=*{id})}" th:method="Post">
+                         <input type="submit" value="Decrease" class="btn btn-danger" >
+                     </form>
+                 </td>
+                 <td th:text="*{count}" >Broi</td>
+                 <td >
+                     <form th:action="@{/cart/increaseCount/{id}/(id=*{id})}" th:method="Post">
+                         <input type="submit" value="Increase" class="btn btn-danger" >
+                     </form>
+                 </td>
+                 <td th:text="*{product.price}" >price</td>
+                 <td th:with="variable = ${c.product.price}, controllerVar = ${c.count}, var = ${variable * controllerVar}" th:text="${var}" >total price</td>
+                 <td >
+                     <form th:action="@{/cart/delete/{id}/(id=*{id})}" th:method="Delete">
+                         <input type="submit" value="Delete" class="btn btn-danger" >
+                     </form>
+                 </td>
+                 <td th:text="*{orderEntity != null} ? *{orderEntity.id } : 'null value!'" >order</td>
+                 <td th:text="${c.topicEntity.topicName}" >topic</td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <br/>
+
+        <div>
+            <footer th:replace="fragments/commons :: footer"></footer>
+        </div>
+    </div>
+
+
+
+
+</body>
+</html>
+
+<!--Feel free to change/update/modify the HTML Structure-->

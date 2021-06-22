@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/commons :: head"></head>
+
+<body>
+
+<header th:replace="fragments/commons :: navigation"></header>
+
+<div class="spacer"></div>
+<div class="container-original">
+    <h2 class="text-center zaglavie">Login</h2>
+    <div class="spacer"></div>
+    <form method="POST"
+          th:action="@{/users/login}"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+        <div class="form-group">
+            <label for="inputUsername"
+                   class="text-white font-weight-bold">Username</label>
+            <input th:value="${username}"
+                   required minlength="3" maxlength="20"
+                   id="inputUsername"
+                   name="username"
+                   type="text"
+                   class="form-control"
+                   placeholder="Enter username"/>
+<!--            <div th:if="${#fields.hasErrors('username')}">-->
+<!--                <smal class="text-danger" >The username must be at least 2 characters long</smal>-->
+<!--            </div>-->
+        </div>
+        <div class="form-group">
+            <label for="inputPassword"
+                   class="text-white font-weight-bold">Password</label>
+            <input
+                    id="inputPassword"
+                    name="password"
+                    type="password"
+                    required minlength="5" maxlength="20"
+                    min="2" max="20"
+                    class="form-control"
+                    placeholder="Enter password"
+                    aria-describedby="passwordHelpInline"/>
+        </div>
+        <div th:if="${bad_credentials}" class="alert alert-danger" role="alert">
+            This username and password combination does not exist.
+        </div>
+
+
+        <div class="row">
+            <div class="col ">
+                <div class="button-holder d-flex justify-content-center">
+                    <input type="submit" class="btn btn-info btn-lg" value="Login"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <footer th:replace="fragments/commons :: footer"></footer>
+</div>
+</body>
+</html>

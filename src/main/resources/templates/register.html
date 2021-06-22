@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/commons :: head"></head>
+
+<body>
+
+<header th:replace="fragments/commons :: navigation"></header>
+
+<div class="spacer"></div>
+<div class="container-original">
+
+    <h2 class="text-center zaglavie">Register User</h2>
+
+    <div class="spacer"></div>
+    <form method="POST"
+          th:action="@{/users/register}"
+          th:object="${registrationBindingModel}"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label for="inputUsername"
+                       class="text-white font-weight-bold">Enter Username</label>
+                <input  name="username"
+                        th:value="*{username}"
+                        th:errorclass="is-invalid"
+                        required minlength="3" maxlength="20"
+                        type="text"
+                        id="inputUsername"
+                        class="form-control"
+                        aria-describedby="usernameHelpInline"
+                        placeholder="Username"/>
+                <small id="usernameError"
+                       th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                       class="invalid-feedback text-light form-text bg-danger rounded"  >Not used error message - Username length must be more than 3 characters</small>
+
+                <small th:if="${userExistsError}" class="text-light form-text bg-danger rounded">Username is already occupied</small>
+
+            </div>
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="inputEmail" class="text-white font-weight-bold">Enter Your Email</label>
+                <input name="email"
+                       th:value="*{email}"
+                       th:errorclass="is-invalid"
+                       required
+                       type="email"
+                       id="inputEmail"
+                       class="form-control"
+                       aria-describedby="emailHelpInline"
+                       placeholder="Email">
+                <small id="emailError"
+                       class="invalid-feedback text-light form-text bg-danger rounded">Must be valid email</small>
+
+            </div>
+
+
+
+        </div>
+        <div class="row">
+            <div class="form-group col mb-3">
+                <label for="inputFullName" class="text-white font-weight-bold">Enter Your Full Name</label>
+                <input name="fullname"
+                       th:value="*{fullname}"
+                       th:errorclass="is-invalid"
+                       required minlength="3"
+                       type="text"
+                       id="inputFullName"
+                       class="form-control"
+                       aria-describedby="fullNameHelpInline"
+                       placeholder="Full name"/>
+                <small id="fullNameError"
+                       class="invalid-feedback text-light form-text bg-danger rounded">Full name length must be more than 3 characters</small>
+            </div>
+
+
+        </div>
+        <div class="row">
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="inputPassword" class="text-white font-weight-bold">Password</label>
+                <input name="password"
+                       th:errorclass="is-invalid"
+                       required minlength="5" maxlength="20"
+                       type="password"
+                       id="inputPassword"
+                       class="form-control"
+                       aria-describedby="passwordHelpInline"
+                       placeholder="Password"/>
+                <small id="passwordError"
+                       class="invalid-feedback text-light form-text bg-danger rounded">
+                    Password length must be between 5 and 20 characters and passwords should match.
+                </small>
+            </div>
+
+            <div class="form-group col-md-6 mb-3">
+                <label for="inputConfirmPassword" class="text-white font-weight-bold">Confirm Password</label>
+                <input name="confirmPassword"
+                       th:errorclass="is-invalid"
+                       required minlength="5" maxlength="20"
+                       type="password"
+                       id="inputConfirmPassword"
+                       class="form-control"
+                       aria-describedby="confirmPasswordHelpInline"
+                       placeholder="Confirm Password"/>
+                <small id="confirmPasswordError"
+                       class="invalid-feedback text-light form-text bg-danger rounded">
+                    Password length must be between 5 and 20 characters and passwords should match.
+                </small>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="form-group col mb-3"  >
+
+                <div id="role" name="role" style="display: inline-block; padding-left: 25px; "
+                     th:each="g : ${T(bigproject.demo.model.entities.enums.UserRole).values()}" >
+                    <input type="checkbox" name="role" style="width: 15px; height: 15px; " th:value="${g.name()}"/>
+                    <label th:text="${g.name()}"></label>
+                </div>
+
+                <!--
+                 <label for="role" class="text-white font-weight-bold" >User role</label>
+                    <select id="role" name="role" class="custom-select form-control" required >
+                        <option disabled selected value="">Select Job Title</option>
+                        <option
+                                th:each="g : ${T(bigproject.demo.model.entities.enums.UserRole).values()}"
+                                th:value="${g.id}"
+                                th:text="${g.title}">Select job title</option>
+                    </select>
+                -->
+
+                <small th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-light form-text bg-danger rounded" >You must select user role.</small>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="form-group">
+
+
+        </div>
+
+        <div class="row text-center">
+            <div class="col ">
+                <div class="button-holder d-flex justify-content-center">
+                    <input type="submit" class="btn btn-info btn-lg" value="Register"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <footer th:replace="fragments/commons :: footer"></footer>
+</div>
+
+</body>
+</html>
